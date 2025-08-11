@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather for {{ city }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather in {{ city }}</h1>
+        {% if weather_data %}
+            <div class="weather-info">
+                {% if weather_data.weather %}
+                    <h2>{{ weather_data.weather[0].main }}</h2>
+                    <p class="description">{{ weather_data.weather[0].description|capitalize }}</p>
+                {% endif %}
+
+                {% if weather_data.main %}
+                    <p>Temperature: {{ (weather_data.main.temp - 273.15)|round(2) }} °C</p>
+                    <p>Feels like: {{ (weather_data.main.feels_like - 273.15)|round(2) }} °C</p>
+                    <p>Humidity: {{ weather_data.main.humidity }}%</p>
+                    <p>Pressure: {{ weather_data.main.pressure }} hPa</p>
+                {% endif %}
+
+                {% if weather_data.wind %}
+                    <p>Wind Speed: {{ weather_data.wind.speed }} m/s</p>
+                    <p>Wind Direction: {{ weather_data.wind.deg }}°</p>
+                {% endif %}
+
+                {% if weather_data.clouds %}
+                    <p>Cloudiness: {{ weather_data.clouds.all }}%</p>
+                {% endif %}
+            </div>
+            <p><a href="/">Go back</a></p>
+        {% else %}
+            <p class="error">Could not retrieve weather data for {{ city }}. Please try again.</p>
+            <p><a href="/">Go back</a></p>
+        {% endif %}
+    </div>
+</body>
+</html>
